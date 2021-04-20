@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
     public void loadModel() {
         WeakReference<MainActivity> weakActivity = new WeakReference<>(this);
         ModelRenderable.builder()
-                .setSource(this, Uri.parse("models/model.glb"))
+                .setSource(this, Uri.parse("models/dome_c1.obj"))
                 .setIsFilamentGltf(true)
                 .build()
                 .thenAccept(renderable -> {
