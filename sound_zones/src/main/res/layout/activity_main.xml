@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraints"
         android:layout_width="match_parent"
@@ -38,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="@color/purple_700"
-            android:text="Resolve"
+            android:text="Load"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="HardcodedText" />
@@ -53,24 +54,37 @@
             app:icon="@drawable/ic_navicon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/overlapText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OVERLAPPING ZONES!"
+            android:textSize="32dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.26999998" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:background="@drawable/rounded"
-        android:layout_height="350dp"
+        android:layout_height="600dp"
         android:orientation="vertical"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="350dp">
+        app:behavior_peekHeight="0dp">
         <ImageView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_remove_24"
             android:scaleType="centerCrop"
             android:layout_gravity="center|top"/>
-        <include layout="@layout/type_selector"/>
+        <include layout="@layout/selection_pager"/>
     </LinearLayout>
 
     <LinearLayout
@@ -117,34 +131,62 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/menuItem1"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
-                        android:background="#00000000"
                         android:text="Item 1"
-                        android:textColor="@color/black" />
-                    <Button
+                        android:textColor="@color/white" />
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/menuItem2"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
-                        android:background="#00000000"
                         android:text="Item 2"
-                        android:textColor="@color/black" />
-                    <Button
+                        android:textColor="@color/white" />
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/menuItem3"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
-                        android:background="#00000000"
                         android:text="Item 3"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/white" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/reset"
+                        android:text="Reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/affordance_dropdown"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="invisible">
+                        <AutoCompleteTextView
+                            android:id="@+id/affordance_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:text="Checker"
+                            android:textAlignment="center"
+                            android:layout_gravity="center_horizontal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/applyButton"
+                        android:text="Apply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

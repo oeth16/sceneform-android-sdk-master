@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/test_view"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".place_zone">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Place zone"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_marginBottom="15dp"/>
 
     <ImageView
         android:id="@+id/ZoneTypeImage"
@@ -13,7 +20,7 @@
         android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:layout_gravity="center_horizontal"
-        android:src="@mipmap/ic_egg" />
+        android:src="@mipmap/ic_dome" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/ZoneName"
@@ -28,8 +35,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/placeButton"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_width="175dp"
+        android:layout_height="75dp"
         android:text="Place zone"
         android:layout_gravity="center_horizontal" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

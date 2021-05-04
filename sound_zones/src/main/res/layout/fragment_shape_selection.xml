@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    tools:context=".shape_selection">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Select shape"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_marginBottom="15dp"/>
+
+   <androidx.appcompat.widget.LinearLayoutCompat
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_marginLeft="45dp">
+
+
+       <com.google.android.material.button.MaterialButton
+           android:id="@+id/DomeShapeButton"
+           android:layout_width="150dp"
+           android:layout_height="150dp"
+           android:layout_gravity="center_horizontal|center_vertical"
+           android:text="Dome"
+           android:textAppearance="@style/TextAppearance.AppCompat.Large"
+           android:layout_margin="5dp"/>
+
+       <com.google.android.material.button.MaterialButton
+           android:id="@+id/EggShapeButton"
+           android:layout_width="150dp"
+           android:layout_height="150dp"
+           android:layout_gravity="center_horizontal|center_vertical"
+           android:text="Egg"
+           android:textAppearance="@style/TextAppearance.AppCompat.Large"
+           android:layout_margin="5dp"/>
+
+   </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="45dp">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/EntityShapeButton"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:text="Entity"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_margin="5dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/OrbShapeButton"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:text="Orb"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_margin="5dp"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
