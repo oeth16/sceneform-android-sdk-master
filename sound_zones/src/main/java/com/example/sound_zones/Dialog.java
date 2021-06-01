@@ -47,7 +47,7 @@ public class Dialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.menu_popup, null);
 
         builder.setView(view)
-                .setTitle("Sound Zone Properties")
+                .setTitle("Sound Zone Editor")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
