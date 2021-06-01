@@ -50,6 +50,7 @@ import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
 import com.google.ar.core.exceptions.CameraNotAvailableException;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         HOSTING,
         HOSTED
     }
-
+    private int zoneCount = 0;
     private int overlapFrameRate = 0;
     private int overlapFrameRateMax = 30;
     private AppAnchorState appAnchorState = AppAnchorState.NONE;
@@ -145,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
     public boolean transparent = false;
     public boolean icons = false;
 
+    boolean overlapping = false;
+    private Toast overlapToast;
+    private Toast tapToast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +162,10 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         zone2Editor = zone2Settings.edit();
         zone3Editor = zone3Settings.edit();
 
-
+        overlapToast = Toast.makeText(this, "Overlapping zones",Toast.LENGTH_LONG);
+        overlapToast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL,0,0);
+        tapToast = Toast.makeText(this, "Tap the screen to place a zone" , Toast.LENGTH_LONG);
+        tapToast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL, 0, 0);
 
         //sheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet));
         //sheetBehavior.setDraggable(true);
@@ -291,6 +298,7 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                viewPager.setCurrentItem(0);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
@@ -308,11 +316,18 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         arFragment.getArSceneView().getScene().addOnUpdateListener(frameTime -> {
             if(currentZone != null){
                 if(overlapFrameRate == 60){
+
                     if(arFragment.getArSceneView().getScene().overlapTestAll(currentZone.GetTransformableNode()).isEmpty()){
-                        overlapText.setVisibility(View.INVISIBLE);
+                        overlapping = false;
+                        overlapToast.cancel();
+                        //overlapText.setVisibility(View.INVISIBLE);
                     }
                     else{
-                        overlapText.setVisibility(View.VISIBLE);
+                        if(overlapping != true){
+                            overlapping = true;
+                            overlapToast.show();
+                        }
+                        //overlapText.setVisibility(View.VISIBLE);
                     }
                     overlapFrameRate = 0;
                 }
@@ -372,7 +387,11 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
             LoadZones();
         });
 
+
+
     }
+
+
 
     public void LoadZones(){
         if(zone1Settings.getBoolean("Zone1", false)){
@@ -589,6 +608,8 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
 
     public void NavigateShapeSelection(){
         viewPager.setCurrentItem(1);
+        shape_selection shape_fragment = (shape_selection)viewPagerAdapter.getItem(1);
+        shape_fragment.AssignImages(selectionType);
     }
 
     public void NavigatePlaceZone(){
@@ -605,7 +626,7 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         AssignZoneID(myZone);
         currentZone = myZone;
         loadModel(myZone);
-        Toast.makeText(this, "Tap the screen to place a zone" , Toast.LENGTH_SHORT).show();
+        tapToast.show();
     }
 
     private int AssignZoneID(SoundZone zone){
@@ -756,5 +777,19 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
                 }
             }
         }, 1000);
+    }
+
+    public int GetZoneCount(){
+        int count = 0;
+        if(zonesCreated[0] == false){
+            count = 1;
+        }
+        else if(zonesCreated[1] == false){
+            count = 2;
+        }
+        else if(zonesCreated[2] == false){
+            count = 3;
+        }
+        return count;
     }
 }

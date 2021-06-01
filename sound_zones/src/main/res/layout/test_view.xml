@@ -13,7 +13,7 @@
         android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:layout_gravity="center_horizontal"
-        android:src="@mipmap/ic_egg" />
+        android:src="@mipmap/ic_dome_c1" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/ZoneName"

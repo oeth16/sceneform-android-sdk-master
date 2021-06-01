@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -23,6 +24,8 @@ public class place_zone extends Fragment {
     private MainActivity activity;
     private ImageView zoneImage;
     private TextInputEditText zoneName;
+    private ImageButton backButton;
+
     private static final String TAG = "MyActivity";
 
     @Override
@@ -32,12 +35,20 @@ public class place_zone extends Fragment {
         zoneName = (TextInputEditText) view.findViewById(R.id.ZoneName);
         placeButton = (Button) view.findViewById(R.id.placeButton);
         activity = (MainActivity) getActivity();
+        backButton = (ImageButton)view.findViewById(R.id.placeMenuBack);
 
         placeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 activity.PlaceZone(zoneName.getText().toString());
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.NavigateShapeSelection();
             }
         });
         return view;
@@ -51,48 +62,49 @@ public class place_zone extends Fragment {
     }
 
     public void SetImage(SoundZoneShape shape, SoundZoneType type){
-        String defaultZoneName = "sound zone";
+        int zoneCount = activity.GetZoneCount();
+        String defaultZoneName = "sound zone " + zoneCount;
         zoneName.setText(defaultZoneName);
         if(type == SoundZoneType.PRIVATE){
             if(shape == SoundZoneShape.DOME){
-                zoneImage.setImageResource(R.mipmap.ic_dome_image_private);
+                zoneImage.setImageResource(R.mipmap.ic_dome_c1);
             }
             else if(shape == SoundZoneShape.EGG){
-                zoneImage.setImageResource(R.mipmap.ic_egg_image_private);
+                zoneImage.setImageResource(R.mipmap.ic_egg_c1);
             }
             else if(shape == SoundZoneShape.ORB){
-                zoneImage.setImageResource(R.mipmap.ic_orb_image_private);
+                zoneImage.setImageResource(R.mipmap.ic_orb_c1);
             }
             else if(shape == SoundZoneShape.ENTITY){
-                zoneImage.setImageResource(R.mipmap.ic_entity_image_private);
+                zoneImage.setImageResource(R.mipmap.ic_entity_c1);
             }
         }
         else  if(type == SoundZoneType.MIXED){
             if(shape == SoundZoneShape.DOME){
-                zoneImage.setImageResource(R.mipmap.ic_dome_image_mixed);
+                zoneImage.setImageResource(R.mipmap.ic_dome_c2);
             }
             else if(shape == SoundZoneShape.EGG){
-                zoneImage.setImageResource(R.mipmap.ic_egg_image_mixed);
+                zoneImage.setImageResource(R.mipmap.ic_egg_c2);
             }
             else if(shape == SoundZoneShape.ORB){
-                zoneImage.setImageResource(R.mipmap.ic_orb_image_mixed);
+                zoneImage.setImageResource(R.mipmap.ic_orb_c2);
             }
             else if(shape == SoundZoneShape.ENTITY){
-                zoneImage.setImageResource(R.mipmap.ic_entity_image_mixed);
+                zoneImage.setImageResource(R.mipmap.ic_entity_c2);
             }
         }
         else  if(type == SoundZoneType.SOCIAL){
             if(shape == SoundZoneShape.DOME){
-                zoneImage.setImageResource(R.mipmap.ic_dome_image_social);
+                zoneImage.setImageResource(R.mipmap.ic_dome_c3);
             }
             else if(shape == SoundZoneShape.EGG){
-                zoneImage.setImageResource(R.mipmap.ic_egg_image_social);
+                zoneImage.setImageResource(R.mipmap.ic_egg_c3);
             }
             else if(shape == SoundZoneShape.ORB){
-                zoneImage.setImageResource(R.mipmap.ic_orb_image_social);
+                zoneImage.setImageResource(R.mipmap.ic_orb_c3);
             }
             else if(shape == SoundZoneShape.ENTITY){
-                zoneImage.setImageResource(R.mipmap.ic_entity_image_social);
+                zoneImage.setImageResource(R.mipmap.ic_entity_c3);
             }
         }
 

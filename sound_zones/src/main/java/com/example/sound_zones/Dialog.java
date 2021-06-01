@@ -47,11 +47,18 @@ public class Dialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.menu_popup, null);
 
         builder.setView(view)
-                .setTitle(_zone.GetName())
+                .setTitle("Sound Zone Properties")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+            }
+        })
+        .setNeutralButton("delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                activity.DeleteZone();
+                getDialog().dismiss();
             }
         })
         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
@@ -93,7 +100,8 @@ public class Dialog extends AppCompatDialogFragment {
         typeText.setAdapter(typesAdapter);
         shapeText.setAdapter(shapeAdapter);
 
-        deleteButton = view.findViewById(R.id.deleteButton);
+        /*
+                deleteButton = view.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +109,9 @@ public class Dialog extends AppCompatDialogFragment {
                 getDialog().dismiss();
             }
         });
+         */
+
+
         return builder.create();
     }
 

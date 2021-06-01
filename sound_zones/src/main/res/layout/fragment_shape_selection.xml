@@ -4,69 +4,194 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_horizontal"
     tools:context=".shape_selection">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Select shape"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_marginBottom="15dp"/>
-
-   <androidx.appcompat.widget.LinearLayoutCompat
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal"
-       android:layout_marginLeft="45dp">
-
-
-       <com.google.android.material.button.MaterialButton
-           android:id="@+id/DomeShapeButton"
-           android:layout_width="150dp"
-           android:layout_height="150dp"
-           android:layout_gravity="center_horizontal|center_vertical"
-           android:text="Dome"
-           android:textAppearance="@style/TextAppearance.AppCompat.Large"
-           android:layout_margin="5dp"/>
-
-       <com.google.android.material.button.MaterialButton
-           android:id="@+id/EggShapeButton"
-           android:layout_width="150dp"
-           android:layout_height="150dp"
-           android:layout_gravity="center_horizontal|center_vertical"
-           android:text="Egg"
-           android:textAppearance="@style/TextAppearance.AppCompat.Large"
-           android:layout_margin="5dp"/>
-
-   </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="45dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/select_sound_zone_shape"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_marginBottom="15dp"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/shapeMenuBack"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/white"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dp">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/DomeShapeButton"
+                android:clickable="true"
+                android:checkable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black"
+                app:cardElevation="2dp"
+                android:layout_marginRight="15dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dome"
+                        android:layout_gravity="center_horizontal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                    <ImageView
+                        android:id="@+id/DomeImageView"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/ic_dome_c1"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/EggShapeButton"
+                android:clickable="true"
+                android:checkable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/egg"
+                        android:layout_gravity="center_horizontal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                    <ImageView
+                        android:id="@+id/EggImageView"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/ic_egg_c1"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dp">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/OrbShapeButton"
+                android:clickable="true"
+                android:checkable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black"
+                app:cardElevation="2dp"
+                android:layout_marginRight="15dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/orb"
+                        android:layout_gravity="center_horizontal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                    <ImageView
+                        android:id="@+id/OrbImageView"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/ic_orb_c1"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/EntityShapeButton"
+                android:clickable="true"
+                android:checkable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Entity"
+                        android:layout_gravity="center_horizontal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                    <ImageView
+                        android:id="@+id/EntityImageview"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/ic_entity_c1"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/EntityShapeButton"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:text="Entity"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_margin="5dp"/>
+            android:id="@+id/shapeHelpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Help"
+            app:icon="@drawable/ic_baseline_help_outline_24"
+            app:iconGravity="textStart"
+            android:layout_marginTop="15dp"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/OrbShapeButton"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:text="Orb"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_margin="5dp"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

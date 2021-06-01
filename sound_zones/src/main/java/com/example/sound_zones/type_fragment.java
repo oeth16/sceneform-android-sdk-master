@@ -10,24 +10,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.card.MaterialCardView;
 
 
 public class type_fragment extends Fragment {
 
-    private Button privateButton;
-    private Button mixedButton;
-    private Button socialButton;
+    private MaterialCardView privateButton;
+    private MaterialCardView mixedButton;
+    private MaterialCardView socialButton;
     private MainActivity activity;
     public SoundZoneType selectionType = SoundZoneType.NONE;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_type_fragment, container, false);
-        privateButton = (Button)view.findViewById(R.id.SelectPrivateButton);
-        mixedButton = (Button) view.findViewById(R.id.SelectMixedButton);
-        socialButton = (Button)view.findViewById(R.id.SelectSocialButton);
+        privateButton = (MaterialCardView)view.findViewById(R.id.SelectPrivateButton);
+        mixedButton = (MaterialCardView) view.findViewById(R.id.SelectMixedButton);
+        socialButton = (MaterialCardView)view.findViewById(R.id.SelectSocialButton);
         activity = (MainActivity) getActivity();
 
         privateButton.setOnClickListener(new View.OnClickListener() {

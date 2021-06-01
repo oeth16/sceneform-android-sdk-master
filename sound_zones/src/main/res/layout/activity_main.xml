@@ -34,17 +34,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/resolve"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@color/purple_700"
-            android:text="Load"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="HardcodedText" />
-
-        <Button
             android:id="@+id/menuButton"
             android:layout_width="45dp"
             android:layout_height="wrap_content"
@@ -157,12 +146,21 @@
                         android:layout_height="50dp"
                         android:text="Item 3"
                         android:textColor="@color/white" />
+
+                    <Button
+                        android:id="@+id/resolve"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Load"
+                        tools:ignore="HardcodedText" />
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/reset"
                         android:text="Reset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"/>
+                        android:layout_marginTop="10dp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/affordance_dropdown"

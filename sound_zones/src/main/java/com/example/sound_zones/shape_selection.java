@@ -11,24 +11,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import com.google.android.material.card.MaterialCardView;
 
 
 public class shape_selection extends Fragment {
     private static final String TAG = "MyActivity";
-    private Button egg;
-    private Button dome;
-    private Button entity;
-    private Button orb;
+    private MaterialCardView egg;
+    private MaterialCardView dome;
+    private MaterialCardView entity;
+    private MaterialCardView orb;
+    private ImageView domeImage;
+    private ImageView eggImage;
+    private ImageView orbImage;
+    private ImageView entityImage;
+    private ImageButton backButton;
+
     private MainActivity activity;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_shape_selection, container, false);
-        egg = (Button)view.findViewById(R.id.EggShapeButton);
-        dome = (Button)view.findViewById(R.id.DomeShapeButton);
-        entity = (Button)view.findViewById(R.id.EntityShapeButton);
-        orb = (Button)view.findViewById(R.id.OrbShapeButton);
+        dome = (MaterialCardView)view.findViewById(R.id.DomeShapeButton);
+        egg = (MaterialCardView)view.findViewById(R.id.EggShapeButton);
+        orb = (MaterialCardView)view.findViewById(R.id.OrbShapeButton);
+        entity = (MaterialCardView)view.findViewById(R.id.EntityShapeButton);
+
+        domeImage = (ImageView)view.findViewById(R.id.DomeImageView);
+        eggImage = (ImageView)view.findViewById(R.id.EggImageView);
+        orbImage = (ImageView)view.findViewById(R.id.OrbImageView);
+        entityImage = (ImageView)view.findViewById(R.id.EntityImageview);
+
+        backButton = (ImageButton)view.findViewById(R.id.shapeMenuBack);
         activity = (MainActivity) getActivity();
+
+        AssignImages(activity.selectionType);
 
         egg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,12 +82,41 @@ public class shape_selection extends Fragment {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.NavigateTypeSelection();
+            }
+        });
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void AssignImages(SoundZoneType type){
+        Log.i("Type", "Type is: " + type);
+        if(type == SoundZoneType.PRIVATE){
+            domeImage.setImageResource(R.mipmap.ic_dome_c1);
+            eggImage.setImageResource(R.mipmap.ic_egg_c1);
+            orbImage.setImageResource(R.mipmap.ic_orb_c1);
+            entityImage.setImageResource(R.mipmap.ic_entity_c1);
+        }
+        else if(type == SoundZoneType.MIXED){
+            domeImage.setImageResource(R.mipmap.ic_dome_c2);
+            eggImage.setImageResource(R.mipmap.ic_egg_c2);
+            orbImage.setImageResource(R.mipmap.ic_orb_c2);
+            entityImage.setImageResource(R.mipmap.ic_entity_c2);
+        }
+        else if(type == SoundZoneType.SOCIAL){
+            domeImage.setImageResource(R.mipmap.ic_dome_c3);
+            eggImage.setImageResource(R.mipmap.ic_egg_c3);
+            orbImage.setImageResource(R.mipmap.ic_orb_c3);
+            entityImage.setImageResource(R.mipmap.ic_entity_c3);
+        }
     }
 
 }

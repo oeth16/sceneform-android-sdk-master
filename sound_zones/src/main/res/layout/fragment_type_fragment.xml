@@ -3,44 +3,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".type_fragment">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
 
-            <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/select_sound_zone_type"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:layout_marginBottom="15dp"/>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/select_sound_zone_type"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:layout_marginBottom="15dp"/>
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/SelectPrivateButton"
+                    android:clickable="true"
+                    android:checkable="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/black"
+                    app:cardElevation="2dp"
+                    android:layout_marginRight="15dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/SelectPrivateButton"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:text="@string/private_zone"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/private_string"
+                            android:layout_gravity="center_horizontal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/SelectMixedButton"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:text="@string/mixed_zone"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:adjustViewBounds="true"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@mipmap/ic_dome_c1"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.button.MaterialButton
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/SelectMixedButton"
+                    android:clickable="true"
+                    android:checkable="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/black"
+                    app:cardElevation="2dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mixed"
+                            android:layout_gravity="center_horizontal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:adjustViewBounds="true"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@mipmap/ic_dome_c2"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/SelectSocialButton"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:text="@string/social_zone"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-        </LinearLayout>
+                android:clickable="true"
+                android:focusable="true"
+                android:checkable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/social"
+                        android:layout_gravity="center_horizontal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/ic_dome_c3"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/typeHelpButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Help"
+                app:icon="@drawable/ic_baseline_help_outline_24"
+                app:iconGravity="textStart"
+                android:layout_marginTop="15dp"/>
+        </LinearLayout>
 </androidx.core.widget.NestedScrollView>

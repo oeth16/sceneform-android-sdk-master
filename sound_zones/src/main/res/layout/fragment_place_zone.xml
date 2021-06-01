@@ -13,14 +13,23 @@
         android:text="Place zone"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:layout_marginBottom="15dp"/>
-
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/placeMenuBack"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@drawable/ic_baseline_keyboard_backspace_24" />
     <ImageView
         android:id="@+id/ZoneTypeImage"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:layout_gravity="center_horizontal"
-        android:src="@mipmap/ic_dome" />
+        android:src="@mipmap/ic_dome_c1" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/ZoneName"
