@@ -8,7 +8,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center">
 
@@ -16,9 +16,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/select_sound_zone_type"
+                    android:text="Help"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:layout_marginBottom="15dp"/>
+/>
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/shapeMenuBack"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:background="@color/white"
+                android:scaleX="2"
+                android:scaleY="2"
+                android:src="@drawable/ic_baseline_keyboard_backspace_24" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -29,7 +38,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/SelectPrivateButton"
-                    android:clickable="true"
+                    android:clickable="false"
                     android:checkable="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,32 +47,42 @@
                     app:strokeColor="@color/black"
                     app:cardElevation="2dp"
                     android:layout_marginRight="15dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="center_horizontal">
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="vertical">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/private_string"
                             android:layout_gravity="center_horizontal"
+                            android:text="@string/private_string"
                             android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
                         <ImageView
                             android:layout_width="150dp"
                             android:layout_height="150dp"
-                            android:adjustViewBounds="true"
                             android:layout_gravity="center_horizontal"
-                            android:src="@mipmap/ic_dome_c1"/>
+                            android:adjustViewBounds="true"
+                            android:src="@mipmap/ic_dome_c1" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp"
+                            android:textAlignment="center"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/private_help"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:textSize="17sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/SelectMixedButton"
-                    android:clickable="true"
+                    android:clickable="false"
                     android:checkable="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,6 +109,16 @@
                             android:adjustViewBounds="true"
                             android:layout_gravity="center_horizontal"
                             android:src="@mipmap/ic_dome_c2"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp"
+                            android:textAlignment="center"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/mixed_help"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:textSize="17sp" />
+
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -99,8 +128,8 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/SelectSocialButton"
-                android:clickable="true"
-                android:focusable="true"
+                android:clickable="false"
+                android:focusable="false"
                 android:checkable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,19 +156,17 @@
                         android:adjustViewBounds="true"
                         android:layout_gravity="center_horizontal"
                         android:src="@mipmap/ic_dome_c3"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:textAlignment="center"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/public_help"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        android:textSize="17sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/typeHelpButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Help"
-                app:icon="@drawable/ic_baseline_help_outline_24"
-                app:iconGravity="textStart"
-                android:layout_marginTop="15dp"/>
-
         </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

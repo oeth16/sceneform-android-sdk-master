@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -42,6 +44,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.ArCoreApk;
 import com.google.ar.core.Camera;
 import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
@@ -55,14 +58,15 @@ import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.Sceneform;
+import com.google.ar.sceneform.collision.Ray;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
-import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.Material;
 import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.rendering.RenderableInstance;
+import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.rendering.Texture;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.BaseArFragment;
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
     private AppAnchorState appAnchorState = AppAnchorState.NONE;
     public SoundZoneType selectionType = SoundZoneType.NONE;
     public SoundZoneShape zoneShape = SoundZoneShape.NONE;
+    public String zoneName = "";
     private Anchor cloudAnchor;
     private boolean isPlaced = true;
     private ArFragment arFragment;
@@ -128,14 +133,17 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
     private ViewPagerAdapter viewPagerAdapter;
     private SoundZone currentZone;
     private boolean[] zonesCreated = new boolean[] {false, false, false};
-    private SoundZone[] soundZones = new SoundZone[3];
+    public SoundZone[] soundZones = new SoundZone[3];
     private Button menuButton1;
     private Button menuButton2;
     private Button menuButton3;
     private Button resetButton;
     private Button applyButton;
 
+    private  Session.FeatureMapQuality quality;
+
     private MaterialTextView overlapText;
+    private MaterialTextView qualityText;
 
     private TextInputLayout affordanceDropdown;
     private AutoCompleteTextView affordanceText;
@@ -184,15 +192,15 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
 
         bottomSheet = findViewById(R.id.bottom_sheet);
         bottomSheetMenu = findViewById(R.id.bottom_sheet_menu);
-        bottomSheetVis = findViewById(R.id.bottom_sheet_zone_vis);
+        //bottomSheetVis = findViewById(R.id.bottom_sheet_zone_vis);
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehaviorMenu = BottomSheetBehavior.from(bottomSheetMenu);
-        bottomSheetBehaviorVis = BottomSheetBehavior.from(bottomSheetVis);
+        //bottomSheetBehaviorVis = BottomSheetBehavior.from(bottomSheetVis);
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheetBehaviorMenu.setState(BottomSheetBehavior.STATE_HIDDEN);
-        bottomSheetBehaviorVis.setState(BottomSheetBehavior.STATE_HIDDEN);
+        //bottomSheetBehaviorVis.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         bottomSheetBehaviorMenu.setDraggable(false);
 
@@ -206,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         viewPagerAdapter.addFragment(new type_fragment());
         viewPagerAdapter.addFragment(new shape_selection());
         viewPagerAdapter.addFragment(new place_zone());
+        viewPagerAdapter.addFragment(new help_fragment());
 
         viewPager.setAdapter(viewPagerAdapter);
 
@@ -219,6 +228,10 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
 
         overlapText = findViewById(R.id.overlapText);
         overlapText.setVisibility(View.INVISIBLE);
+
+        qualityText = findViewById(R.id.qualityText);
+        qualityText.setTextColor(Color.RED);
+        qualityText.setVisibility(View.INVISIBLE);
 
         menuButton1 = findViewById(R.id.menuItem1);
         menuButton1.setVisibility(View.INVISIBLE);
@@ -285,10 +298,13 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
                     }
                     UpdateMenuNames();
                     zone1Editor.putBoolean("Zone1", false);
+                    zone1Editor.putString("AnchorID", null);
                     zone1Editor.apply();
                     zone2Editor.putBoolean("Zone2", false);
+                    zone2Editor.putString("AnchorID", null);
                     zone2Editor.apply();
                     zone3Editor.putBoolean("Zone3", false);
+                    zone3Editor.putString("AnchorID", null);
                     zone3Editor.apply();
                 }
             }, 1000);
@@ -298,8 +314,13 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewPager.setCurrentItem(0);
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                if(zonesCreated[0] == true && zonesCreated[1] == true && zonesCreated[2] == true){
+                    Toast.makeText(view.getContext(), "Cannot place more than 3 sound zones" , Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    viewPager.setCurrentItem(0);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
             }
         });
         arFragment = (CustomARFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
@@ -314,6 +335,7 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
 
 
         arFragment.getArSceneView().getScene().addOnUpdateListener(frameTime -> {
+
             if(currentZone != null){
                 if(overlapFrameRate == 60){
 
@@ -394,78 +416,119 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
 
 
     public void LoadZones(){
-        if(zone1Settings.getBoolean("Zone1", false)){
-            //Load zone 1
-            String anchorID = zone1Settings.getString("AnchorID", "null");
-            String zoneName = zone1Settings.getString("Name", "null");
-            SoundZoneType type = SoundZoneType.valueOf(zone1Settings.getString("Type", "null"));
-            SoundZoneShape shape = SoundZoneShape.valueOf(zone1Settings.getString("Shape", "null"));
-            if(anchorID.equals("null")){
-                Toast.makeText(this, "No ID found", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Anchor resolvedAnchor = arFragment.getArSceneView().getSession().resolveCloudAnchor((anchorID));
-            SoundZone myZone = new SoundZone(zoneName, shape, type,new TransformableNode(arFragment.getTransformationSystem()));
-            AssignZoneID(myZone);
-            currentZone = myZone;
-            loadModel(myZone);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    CreateModel(resolvedAnchor, myZone);
+        boolean canLoad = false;
+        if(soundZones[0] == null){
+            if(zone1Settings.getBoolean("Zone1", false)){
+                //Load zone 1
+                canLoad = true;
+                String anchorID = zone1Settings.getString("AnchorID", "null");
+                if(anchorID.equals("null")){
+                    Toast.makeText(this, "No ID found for zone 1", Toast.LENGTH_SHORT).show();
                 }
-            }, 400);
-            Toast.makeText(this, "Found anchor with ID" + anchorID, Toast.LENGTH_SHORT).show();
-        }
-        if(zone2Settings.getBoolean("Zone2", false)){
-            //Load zone 2
-            String anchorID = zone2Settings.getString("AnchorID", "null");
-            String zoneName = zone2Settings.getString("Name", "null");
-            SoundZoneType type = SoundZoneType.valueOf(zone2Settings.getString("Type", "null"));
-            SoundZoneShape shape = SoundZoneShape.valueOf(zone2Settings.getString("Shape", "null"));
-            if(anchorID.equals("null")){
-                Toast.makeText(this, "No ID found", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Anchor resolvedAnchor = arFragment.getArSceneView().getSession().resolveCloudAnchor((anchorID));
-            SoundZone myZone = new SoundZone(zoneName, shape, type,new TransformableNode(arFragment.getTransformationSystem()));
-            AssignZoneID(myZone);
-            currentZone = myZone;
-            loadModel(myZone);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    CreateModel(resolvedAnchor, myZone);
+                else{
+                    String zoneName = zone1Settings.getString("Name", "null");
+                    SoundZoneType type = SoundZoneType.valueOf(zone1Settings.getString("Type", "null"));
+                    SoundZoneShape shape = SoundZoneShape.valueOf(zone1Settings.getString("Shape", "null"));
+                    Anchor resolvedAnchor = arFragment.getArSceneView().getSession().resolveCloudAnchor((anchorID));
+                    SoundZone myZone = new SoundZone(zoneName, shape, type,new TransformableNode(arFragment.getTransformationSystem()));
+                    AssignZoneID(myZone);
+                    currentZone = myZone;
+                    soundZones[0] = myZone;
+                    zonesCreated[0] = true;
+                    loadModel(myZone);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            CreateModel(resolvedAnchor, myZone);
+                        }
+                    }, 400);
+                    Toast.makeText(this, "Zone 1 Found anchor with ID" + anchorID, Toast.LENGTH_SHORT).show();
                 }
-            }, 400);
-            Toast.makeText(this, "Found anchor with ID" + anchorID, Toast.LENGTH_SHORT).show();
-        }
-        if(zone3Settings.getBoolean("Zone3", false)){
-            //Load zone 3
-            String anchorID = zone3Settings.getString("AnchorID", "null");
-            String zoneName = zone3Settings.getString("Name", "null");
-            SoundZoneType type = SoundZoneType.valueOf(zone3Settings.getString("Type", "null"));
-            SoundZoneShape shape = SoundZoneShape.valueOf(zone3Settings.getString("Shape", "null"));
-            if(anchorID.equals("null")){
-                Toast.makeText(this, "No ID found", Toast.LENGTH_SHORT).show();
-                return;
+
             }
-            Anchor resolvedAnchor = arFragment.getArSceneView().getSession().resolveCloudAnchor((anchorID));
-            SoundZone myZone = new SoundZone(zoneName, shape, type,new TransformableNode(arFragment.getTransformationSystem()));
-            AssignZoneID(myZone);
-            currentZone = myZone;
-            loadModel(myZone);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    CreateModel(resolvedAnchor, myZone);
-                }
-            }, 400);
-            Toast.makeText(this, "Found anchor with ID" + anchorID, Toast.LENGTH_SHORT).show();
         }
+        else{
+            soundZones[0] = null;
+            zonesCreated[0] = false;
+        }
+        if(soundZones[1] == null){
+            if(zone2Settings.getBoolean("Zone2", false)){
+                //Load zone 2
+                canLoad = true;
+                String anchorID = zone2Settings.getString("AnchorID", "null");
+                if(anchorID.equals("null")){
+                    Toast.makeText(this, "No ID found for zone 2", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else{
+                    String zoneName = zone2Settings.getString("Name", "null");
+                    SoundZoneType type = SoundZoneType.valueOf(zone2Settings.getString("Type", "null"));
+                    SoundZoneShape shape = SoundZoneShape.valueOf(zone2Settings.getString("Shape", "null"));
+
+                    Anchor resolvedAnchor = arFragment.getArSceneView().getSession().resolveCloudAnchor((anchorID));
+                    SoundZone myZone = new SoundZone(zoneName, shape, type,new TransformableNode(arFragment.getTransformationSystem()));
+                    AssignZoneID(myZone);
+                    currentZone = myZone;
+                    soundZones[1] = myZone;
+                    zonesCreated[1] = true;
+                    loadModel(myZone);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            CreateModel(resolvedAnchor, myZone);
+                        }
+                    }, 400);
+                    Toast.makeText(this, "Zone 2 found anchor with ID" + anchorID, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+        else{
+            soundZones[1] = null;
+            zonesCreated[1] = false;
+        }
+        if(soundZones[2] == null){
+            if(zone3Settings.getBoolean("Zone3", false)){
+                //Load zone 3
+                canLoad = true;
+                String anchorID = zone3Settings.getString("AnchorID", "null");
+                if(anchorID.equals("null")){
+                    Toast.makeText(this, "No ID found for zone 3", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else{
+                    String zoneName = zone3Settings.getString("Name", "null");
+                    SoundZoneType type = SoundZoneType.valueOf(zone3Settings.getString("Type", "null"));
+                    SoundZoneShape shape = SoundZoneShape.valueOf(zone3Settings.getString("Shape", "null"));
+
+                    Anchor resolvedAnchor = arFragment.getArSceneView().getSession().resolveCloudAnchor((anchorID));
+                    SoundZone myZone = new SoundZone(zoneName, shape, type,new TransformableNode(arFragment.getTransformationSystem()));
+                    AssignZoneID(myZone);
+                    currentZone = myZone;
+                    soundZones[2] = myZone;
+                    zonesCreated[2] = true;
+                    loadModel(myZone);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            CreateModel(resolvedAnchor, myZone);
+                        }
+                    }, 400);
+                    Toast.makeText(this, "Zone 3 found anchor with ID" + anchorID, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        else{
+            soundZones[2] = null;
+            zonesCreated[2] = false;
+        }
+        if(canLoad == false){
+            Toast.makeText(this, "No zones to load", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -553,17 +616,69 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
          */
         if(!isPlaced){
             //Anchor anchor = hitResult.getTrackable().createAnchor(hitResult.getHitPose().compose(Pose.makeTranslation(0,1.0f,0))); //Default is hitResult.CreateAnchor();
-            Anchor anchor = hitResult.createAnchor(); //Default is hitResult.CreateAnchor();
+            //Anchor anchor = hitResult.createAnchor(); //Default is hitResult.CreateAnchor();
+            //isPlaced = true;
 
+            //else if(quality == Session.FeatureMapQuality.GOOD || quality == Session.FeatureMapQuality.SUFFICIENT){
+            qualityText.setVisibility(View.INVISIBLE);
+            Anchor anchor = hitResult.createAnchor();
+            SoundZone myZone = new SoundZone(zoneName, zoneShape, selectionType,new TransformableNode(arFragment.getTransformationSystem()));
+            AssignZoneID(myZone);
+            currentZone = myZone;
+            loadModel(myZone);
             cloudAnchor = arFragment.getArSceneView().getSession().hostCloudAnchor(anchor);
             appAnchorState = AppAnchorState.HOSTING;
             Toast.makeText(this, "Saving sound zone..." , Toast.LENGTH_SHORT).show();
             isPlaced = true;
-            CreateModel(cloudAnchor, currentZone);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    CreateModel(cloudAnchor, currentZone);
+                }
+            }, 500);
+            //}
         }
     }
 
+    public void TestFeatures() throws InterruptedException {
+        boolean qualityInsufficient = true;
+        while(qualityInsufficient == true){
+            Thread.sleep((500));
+            try{
+                Session.FeatureMapQuality quality = arFragment.getArSceneView().getSession().estimateFeatureMapQualityForHosting(arFragment.getArSceneView().getArFrame().getCamera().getPose());
+                Log.i("Feature", "Feature quality is: " + quality.toString());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UpdateQualityUI(quality);
+                    }
+                });
+                if(quality == Session.FeatureMapQuality.GOOD || quality == Session.FeatureMapQuality.SUFFICIENT){
+                    qualityInsufficient = false;
+                    isPlaced = false;
+                    tapToast.show();
+                }
+            }
+            catch(Exception e){
+            }
+        }
+    }
 
+    public void UpdateQualityUI(Session.FeatureMapQuality quality){
+        qualityText.setVisibility(View.VISIBLE);
+        qualityText.setText(quality.toString() + " FEATURES");
+        if(quality == Session.FeatureMapQuality.GOOD){
+            qualityText.setTextColor(Color.GREEN);
+        }
+        else if(quality == Session.FeatureMapQuality.SUFFICIENT){
+            qualityText.setTextColor(Color.GREEN);
+
+        }
+        else if(quality == Session.FeatureMapQuality.INSUFFICIENT){
+            qualityText.setTextColor(Color.RED);
+        }
+    }
 
     private void CreateModel(Anchor anchor, SoundZone zone){
         AnchorNode anchorNode = new AnchorNode(anchor);
@@ -595,8 +710,6 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
             }
         });
          */
-
-
     }
 
 
@@ -604,6 +717,10 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
 
     public void NavigateTypeSelection(){
         viewPager.setCurrentItem(0);
+    }
+
+    public void NavigatehelpFragment(){
+        viewPager.setCurrentItem(3);
     }
 
     public void NavigateShapeSelection(){
@@ -620,13 +737,24 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
 
     public void PlaceZone(String zoneName){
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        isPlaced = false;
+        isPlaced = true;
         NavigateTypeSelection();
-        SoundZone myZone = new SoundZone(zoneName, zoneShape, selectionType,new TransformableNode(arFragment.getTransformationSystem()));
-        AssignZoneID(myZone);
-        currentZone = myZone;
-        loadModel(myZone);
-        tapToast.show();
+        this.zoneName = zoneName;
+        //tapToast.show();
+        quality = arFragment.getArSceneView().getSession().estimateFeatureMapQualityForHosting(arFragment.getArSceneView().getArFrame().getCamera().getPose());
+        if(quality == Session.FeatureMapQuality.INSUFFICIENT){
+            Toast.makeText(this, "Walk around and move the phone for 10 seconds until features are sufficient." , Toast.LENGTH_LONG).show();
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        TestFeatures();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     private int AssignZoneID(SoundZone zone){
@@ -703,6 +831,7 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         }
     }
 
+
     public void UpdateZoneModel() {
         AnchorNode anchor = currentZone.GetAnchorNode();
         TransformableNode old_node = currentZone.GetTransformableNode();
@@ -765,14 +894,17 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
                 UpdateMenuNames();
                 if(index == 0){
                     zone1Editor.putBoolean("Zone1", false);
+                    zone1Editor.putString("AnchorID", null);
                     zone1Editor.apply();
                 }
                 if(index == 1){
                     zone2Editor.putBoolean("Zone2", false);
+                    zone2Editor.putString("AnchorID", null);
                     zone2Editor.apply();
                 }
                 if(index == 2){
                     zone3Editor.putBoolean("Zone3", false);
+                    zone3Editor.putString("AnchorID", null);
                     zone3Editor.apply();
                 }
             }
@@ -792,4 +924,59 @@ public class MainActivity extends AppCompatActivity implements BaseArFragment.On
         }
         return count;
     }
+
+    public void DuplicateZone(SoundZone zone){
+        if(zonesCreated[0] == true && zonesCreated[1] == true && zonesCreated[2] == true){
+            Toast.makeText(this, "Cannot place more than 3 sound zones" , Toast.LENGTH_SHORT).show();
+        }
+        else{
+            zoneShape = zone.GetShape();
+            selectionType = zone.GetType();
+            PlaceZone(zone.GetName() + "(Copy)");
+            //Log.i("Feature", "name is: " + zoneName);
+            //Log.i("Feature", "shape is: " + zoneShape);
+            //Log.i("Feature", "type is: " + selectionType);
+        }
+
+    }
+
+    public void SwapZones(String name, SoundZone selectedZone){
+        /*
+        SoundZone targetZone = null;
+        if(soundZones[0] != null) {
+            Log.i("Swap", "name is: " + soundZones[0].GetName());
+            Log.i("Swap", "selected name is: " + name);
+            if(soundZones[0].GetName().equals(name)){
+                targetZone = soundZones[0];
+            }
+        }
+
+        if(soundZones[1] != null) {
+            Log.i("Swap", "name is: " + soundZones[1].GetName());
+            Log.i("Swap", "selected name is: " + name);
+            if(soundZones[1].GetName().equals(name)){
+                targetZone = soundZones[1];
+            }
+        }
+
+        if(soundZones[2] != null){
+            Log.i("Swap", "name is: " + soundZones[2].GetName());
+            Log.i("Swap", "selected name is: " + name);
+            if(soundZones[2].GetName().equals(name)){
+                targetZone = soundZones[2];
+            }
+
+        }
+        if(targetZone == null){
+            Toast.makeText(this, "Swapping failed..." , Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SoundZone tempSelectedZone = selectedZone;
+        selectedZone.GetTransformableNode().setWorldPosition((targetZone.GetTransformableNode().getWorldPosition()));
+        targetZone.GetTransformableNode().setWorldPosition(tempSelectedZone.GetTransformableNode().getWorldPosition());
+
+    */
+    }
+
 }

@@ -22,6 +22,10 @@
     <string name="private_string">Private</string>
     <string name="mixed">Mixed</string>
     <string name="social">Social</string>
+    <string name="private_help">A private sound zone is for those who want a private soundscape.</string>
+    <string name="public_help">A public zone is the sound zone for sharing media with others.</string>
+    <string name="mixed_help">A mixed sound zone is a combination of public and private</string>
+    <string name="swap_target">Swap target</string>
 
 
 </resources>

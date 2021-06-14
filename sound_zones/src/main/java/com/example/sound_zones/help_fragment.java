@@ -1,43 +1,37 @@
 package com.example.sound_zones;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 
-public class type_fragment extends Fragment {
+public class help_fragment extends Fragment {
 
-    private MaterialCardView privateButton;
-    private MaterialCardView mixedButton;
-    private MaterialCardView socialButton;
-    private MaterialButton typeHelpButton;
+    //private MaterialCardView privateButton;
+    //private MaterialCardView mixedButton;
+    //private MaterialCardView socialButton;
+    private ImageButton backButton;
+
     private MainActivity activity;
     public SoundZoneType selectionType = SoundZoneType.NONE;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_type_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_help, container, false);
 
-        privateButton = (MaterialCardView)view.findViewById(R.id.SelectPrivateButton);
-        mixedButton = (MaterialCardView) view.findViewById(R.id.SelectMixedButton);
-        socialButton = (MaterialCardView)view.findViewById(R.id.SelectSocialButton);
-        typeHelpButton = (MaterialButton)view.findViewById(R.id.typeHelpButton);
-
+        //privateButton = (MaterialCardView)view.findViewById(R.id.SelectPrivateButton);
+        //mixedButton = (MaterialCardView) view.findViewById(R.id.SelectMixedButton);
+        //socialButton = (MaterialCardView)view.findViewById(R.id.SelectSocialButton);
+        backButton = (ImageButton)view.findViewById(R.id.shapeMenuBack);
         activity = (MainActivity) getActivity();
-
+        /*
         privateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,14 +56,15 @@ public class type_fragment extends Fragment {
             }
         });
 
-        typeHelpButton.setOnClickListener(new View.OnClickListener() {
+
+         */
+
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Feature", "Clicked on help");
-                activity.NavigatehelpFragment();
+                activity.NavigateTypeSelection();
             }
         });
-
         return view;
     }
 

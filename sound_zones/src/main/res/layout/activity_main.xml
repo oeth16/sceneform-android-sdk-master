@@ -14,24 +14,40 @@
         android:visibility="visible"
         tools:visibility="visible">
 
+
         <fragment
             android:id="@+id/arFragment"
             android:name="com.example.sound_zones.CustomARFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/qualityText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Testing"
+            android:textSize="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.120000005" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+
             android:contentDescription="@string/fab_content_desc"
-            android:src="@drawable/ic_action_name"
+            android:src="@drawable/ic_baseline_add_24"
+            app:backgroundTint="@color/purple_500"
             app:fabSize="auto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:tint="@color/white" />
 
         <Button
             android:id="@+id/menuButton"
@@ -49,8 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OVERLAPPING ZONES!"
-            android:textSize="32dp"
             android:textColor="@color/black"
+            android:textSize="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,22 +77,26 @@
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
+        android:layout_height="700dp"
         android:background="@drawable/rounded"
-        android:layout_height="600dp"
+        android:elevation="@dimen/cardview_default_elevation"
         android:orientation="vertical"
-        app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp">
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        tools:visibility="invisible">
+
         <ImageView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_remove_24"
+            android:layout_gravity="center|top"
             android:scaleType="centerCrop"
-            android:layout_gravity="center|top"/>
-        <include layout="@layout/selection_pager"/>
+            android:src="@drawable/ic_baseline_remove_24" />
+
+        <include layout="@layout/selection_pager" />
     </LinearLayout>
 
-    <LinearLayout
+    <!--LinearLayout
         android:id="@+id/bottom_sheet_zone_vis"
         android:layout_width="match_parent"
         android:background="@drawable/rounded"
@@ -92,17 +112,18 @@
             android:scaleType="centerCrop"
             android:layout_gravity="center|top"/>
         <include layout="@layout/test_view"/>
-    </LinearLayout>
+    </LinearLayout-->
 
     <LinearLayout
         android:id="@+id/bottom_sheet_menu"
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
-        app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="350dp">
+        app:behavior_peekHeight="350dp"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        tools:visibility="invisible">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/menuBackButton"
@@ -114,6 +135,7 @@
             android:scaleX="2"
             android:scaleY="2"
             android:src="@drawable/ic_baseline_keyboard_backspace_24" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -122,24 +144,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/menuItem1"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:text="Item 1"
                         android:textColor="@color/white" />
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/menuItem2"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:text="Item 2"
                         android:textColor="@color/white" />
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/menuItem3"
                         android:layout_width="wrap_content"
@@ -152,15 +178,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp"
+                        android:background="@color/purple_700"
                         android:text="Load"
                         tools:ignore="HardcodedText" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/reset"
-                        android:text="Reset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="10dp"
+                        android:text="Reset" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/affordance_dropdown"
@@ -170,21 +197,23 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="10dp"
                         android:visibility="invisible">
+
                         <AutoCompleteTextView
                             android:id="@+id/affordance_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:inputType="none"
                             android:text="Checker"
-                            android:textAlignment="center"
-                            android:layout_gravity="center_horizontal" />
+                            android:textAlignment="center" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/applyButton"
-                        android:text="Apply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible"/>
+                        android:text="Apply"
+                        android:visibility="invisible" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
